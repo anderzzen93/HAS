@@ -29,7 +29,7 @@ public class HAS {
 		
 		while(time<241){
 			System.out.print(playing + " ");
-			System.out.print(buffer.getSize());
+			System.out.print(buffer.getSize()+ Integer.toString(currentQuality) + " | ");
 			ocupancyHistory.add(buffer.getSize());
 			//FIx this! Ask about displaying not playing in the graph
 			//qualityHistory.add()
@@ -70,11 +70,15 @@ public class HAS {
 		//Här är någon skit fel!! 
 		downloadTime.add(currentFrag.getTime());
 		//Decide quality
+		
 		//the estimated available bandwidth is equal to the size of the most recently downloaded fragment divided by the time it took to download this fragment. 
 		double estBandwidth = 4*currentFrag.getQuality()/downloadTime.peekLast();
+		
 		//Estimates how many bytes to be able to download before buffer is empty
-		double estimatedNextBytes = (buffer.getSize()+3)*estBandwidth;
-				if (estimatedNextBytes > qualitySize[currentQuality]*4){
+		double estimatedNextBytes = (buffer.getSize()-1)*estBandwidth;
+				
+		
+			if (estimatedNextBytes > qualitySize[currentQuality]*4){
 					if (currentQuality <3){
 						if (estimatedNextBytes > qualitySize[currentQuality+1]*4){
 							currentQuality ++;
@@ -82,7 +86,7 @@ public class HAS {
 					} 
 						
 				}else{
-					for (int i = currentQuality; i >= 0; i-- ){
+					for (int i = currentQuality; i > 0; i-- ){
 						if ((estimatedNextBytes > qualitySize[currentQuality-i]*4)){
 							currentQuality = i;
 							break;
@@ -103,13 +107,14 @@ public class HAS {
 	public static void loadTrace(){
 	String  thisLine = null;
       try{
+    	  //Enter path to bandwidth trace here
     	  FileReader input = new FileReader(new File("D:\\Users\\oskan\\workspace\\HAS\\src\\has\\trace.log "));
 	         // open input stream test.txt for reading purpose.
 	         @SuppressWarnings("resource")
 			BufferedReader br = new BufferedReader(input);
 	         while ((thisLine = br.readLine()) != null) {
 	        	 String[] splitted = thisLine.split(" ");
-    	        	 bandwidth.add(Integer.parseInt(splitted[4]));
+    	        	 bandwidth.add(8*Integer.parseInt(splitted[4]));
     	         }       
     	      }catch(Exception e){
     	         e.printStackTrace();

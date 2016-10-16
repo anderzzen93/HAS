@@ -16,17 +16,19 @@ public class Fragment {
 		time++;
 		if(bandwidth>totalSizeLeft){
 			finished = true;
-			return (int)Math.ceil(fragmentsLeft);
+		//	return (int)Math.ceil(fragmentsLeft);
+			return 4;
 		}
 		else{
 			double downloadedThis;
 			downloadedThis =(double) bandwidth/quality;
 			double temp = fragmentsLeft-downloadedThis;
 			
-			double fragsToReturn = Math.ceil(fragmentsLeft)-Math.ceil(temp);
+		//	double fragsToReturn = Math.ceil(fragmentsLeft)-Math.ceil(temp);
 			fragmentsLeft = temp;
 			totalSizeLeft = (int)(temp*quality);
-			return (int) fragsToReturn;
+		//	return (int) fragsToReturn;
+			return 0;
 					
 			
 //			totalSizeLeft -= bandwidth;
